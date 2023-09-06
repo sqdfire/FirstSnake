@@ -7,9 +7,14 @@ using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Threading;
-
+//         DAILY MISSIONS
+// Make class controls
+// Make menu after lose
+//          WEEKLY MISSIONS 
+// Make new levels and switching levels
 namespace Snake
 {
+    //this is my ideas
     // функция ескейпа, левела но это не сильно имеет смысл так как я буду менять тут половину изза моргания, просто тренируюсь пока
     // сделать жизни, сделать в бут меню старт игры в хард режиме(без жизней) либо для слабочков в легком с жизнями, не знаю нужно ли это 
     // но можно сделать возврат в бут меню после проигрыша, разбить по ООП
@@ -20,7 +25,7 @@ namespace Snake
             bool startGame = false;
             Console.CursorVisible = false;
 
-            char[,] map = ReadMap("map.txt");
+            char[,] map = MapUtility.ReadMap("1lvl.txt");
             ConsoleKeyInfo pressedKey = new ConsoleKeyInfo('w', ConsoleKey.W, false, false, false);
 
             Task.Run(() =>
@@ -58,10 +63,11 @@ namespace Snake
             {
                 Console.Clear();
 
-                HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds);
+
+                HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds, startGame);
 
                 Console.ForegroundColor = ConsoleColor.Blue;
-                DrawMap(map);
+                MapUtility.DrawMap(map);
 
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.SetCursorPosition(snakeX, snakeY); //x, y
@@ -93,32 +99,8 @@ namespace Snake
             }
         }
 
-        private static char[,] ReadMap(string path)
-        {
-            string[] file = File.ReadAllLines("map.txt");
 
-            char[,] map = new char[GetMaxLengthOfLine(file), file.Length];
-
-            for (int x = 0; x < map.GetLength(0); x++)
-                for (int y = 0; y < map.GetLength(1); y++)
-                    map[x, y] = file[y][x];
-
-            return map;
-        }
-
-        private static void DrawMap(char[,] map)
-        {
-            for (int y = 0; y < map.GetLength(1); y++)
-            {
-                for (int x = 0; x < map.GetLength(0); x++)
-                {
-                    Console.Write(map[x, y]);
-                }
-                Console.Write("\n");
-            }
-        }
-
-        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds)
+        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds, bool startGame)
         {
             int[] direction = GetDirection(pressedKey);
             int nextSnakePositionX = snakeX + direction[0];
@@ -201,7 +183,7 @@ namespace Snake
             }
             else if (pressedKey.Key == ConsoleKey.LeftArrow || pressedKey.Key == ConsoleKey.RightArrow)
             {
-                snake = "_" + snake.Substring(1);
+                snake = string.Concat("_", snake.AsSpan(1));
             }
         }
 
@@ -214,6 +196,65 @@ namespace Snake
                     maxLength = line.Length;
 
             return maxLength;
+        }
+    }
+
+    class MapUtility
+    {
+        //Providing file info for the map, can be used in generating a new level map, for example.
+
+        public static string? Map(string fileName)
+        {
+            try
+            {
+                return File.ReadAllText(fileName);
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("File not found, is a file valid?");
+                return null;
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("An I/O (input, output) error occurred while reading the file.");
+                return null;
+            }
+        }
+
+        public static int GetMaxLengthOfLine(string[] lines)
+        {
+            int maxLength = lines[0].Length;
+
+            foreach (var line in lines)
+                if (line.Length > maxLength)
+                    maxLength = line.Length;
+
+            return maxLength;
+        }
+
+        public static char[,] ReadMap(string fileName)
+        {
+            string[] file = File.ReadAllLines(fileName);
+
+            char[,] map = new char[GetMaxLengthOfLine(file), file.Length];
+
+            for (int x = 0; x < map.GetLength(0); x++)
+                for (int y = 0; y < map.GetLength(1); y++)
+                    map[x, y] = file[y][x];
+
+            return map;
+        }
+
+        public static void DrawMap(char[,] map)
+        {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                for (int x = 0; x < map.GetLength(0); x++)
+                {
+                    Console.Write(map[x, y]);
+                }
+                Console.Write("\n");
+            }
         }
     }
 
