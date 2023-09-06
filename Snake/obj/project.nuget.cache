@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8mkva+ZhKuN4jK5BQL4kDdnwzycDnAvkaORKzmRDy+lKkn0uPDWHsB0bpxMStcvy4hcIIpBGJCMjPGB6LApnzA==",
+  "dgSpecHash": "NU8YEGvP2CTXsdAE4kD7L8oMNfgiaNwSp5upqW5LyjcW8GlvgrbXsZNz9ZEBo9FY6hlX9Tba9UFJ/ZFSZoIIkg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\Snake.csproj",
+  "projectFilePath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\Snake.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
