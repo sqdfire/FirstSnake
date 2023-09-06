@@ -3,7 +3,6 @@ C:\Users\eldin\Documents\C#\Snake\Snake\bin\Debug\net6.0\Snake.deps.json
 C:\Users\eldin\Documents\C#\Snake\Snake\bin\Debug\net6.0\Snake.runtimeconfig.json
 C:\Users\eldin\Documents\C#\Snake\Snake\bin\Debug\net6.0\Snake.dll
 C:\Users\eldin\Documents\C#\Snake\Snake\bin\Debug\net6.0\Snake.pdb
-C:\Users\eldin\Documents\C#\Snake\Snake\obj\Debug\net6.0\Snake.csproj.AssemblyReference.cache
 C:\Users\eldin\Documents\C#\Snake\Snake\obj\Debug\net6.0\Snake.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\eldin\Documents\C#\Snake\Snake\obj\Debug\net6.0\Snake.AssemblyInfoInputs.cache
 C:\Users\eldin\Documents\C#\Snake\Snake\obj\Debug\net6.0\Snake.AssemblyInfo.cs

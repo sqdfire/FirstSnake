@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\Snake.csproj": {}
+    "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\Snake.csproj": {}
   },
   "projects": {
-    "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\Snake.csproj": {
+    "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\Snake.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\Snake.csproj",
+        "projectUniqueName": "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\Snake.csproj",
         "projectName": "Snake",
-        "projectPath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\Snake.csproj",
+        "projectPath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\Snake.csproj",
         "packagesPath": "C:\\Users\\eldin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\MyLearning\\Snake\\obj\\",
+        "outputPath": "C:\\Users\\eldin\\Documents\\C#\\Snake\\Snake\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\eldin\\AppData\\Roaming\\NuGet\\NuGet.Config",

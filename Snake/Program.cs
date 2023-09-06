@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace Snake
 {
     // функция ескейпа, левела но это не сильно имеет смысл так как я буду менять тут половину изза моргания, просто тренируюсь пока
     // сделать жизни, сделать в бут меню старт игры в хард режиме(без жизней) либо для слабочков в легком с жизнями, не знаю нужно ли это 
-    // но можно сделать возврат в бут меню после проигрыша.
+    // но можно сделать возврат в бут меню после проигрыша, разбить по ООП
     internal class Program
     {
         static void Main()
@@ -49,7 +50,9 @@ namespace Snake
             Console.SetCursorPosition(50, 6);
             Console.WriteLine("Exit");
             pressedKey = Console.ReadKey();
-            BootMenu(ref pressedKey, ref startGame);
+
+            Menu BootMenu = new Menu(ref pressedKey, ref startGame);
+
 
             while (startGame)
             {
@@ -174,64 +177,6 @@ namespace Snake
             }
         }
 
-        private static void BootMenu(ref ConsoleKeyInfo pressedKey,ref bool startGame)
-        {
-            while (true)
-            {
-                if (!startGame)
-                {
-                    if (pressedKey.Key == ConsoleKey.UpArrow)
-                    {
-                        Console.Clear();
-
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.SetCursorPosition(50, 1);
-                        Console.WriteLine("Snake");
-
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.SetCursorPosition(50, 5);
-                        Console.WriteLine("Start");
-                        Console.SetCursorPosition(70, 5);
-                        Console.WriteLine("Selected*");
-                        Console.SetCursorPosition(50, 6);
-                        Console.WriteLine("Exit");
-                        Console.ReadKey();
-                        if (pressedKey.Key == ConsoleKey.Enter)
-                        {
-                            startGame = true;
-                            Console.Clear();
-                        }
-                    }
-                    else if (pressedKey.Key == ConsoleKey.DownArrow)
-                    {
-                        Console.Clear();
-
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.SetCursorPosition(50, 1);
-                        Console.WriteLine("Snake");
-
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.SetCursorPosition(50, 6);
-                        Console.WriteLine("Exit");
-                        Console.SetCursorPosition(70, 6);
-                        Console.WriteLine("Selected*");
-                        Console.SetCursorPosition(50, 5);
-                        Console.WriteLine("Start");
-                        Console.ReadKey();
-                        if (pressedKey.Key == ConsoleKey.Enter)
-                        {
-                            startGame = false;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
         private static int[] GetDirection(ConsoleKeyInfo pressedKey)
         {
             int[] direction = { 0, 0 };
@@ -269,6 +214,69 @@ namespace Snake
                     maxLength = line.Length;
 
             return maxLength;
+        }
+    }
+
+    class Menu
+    {
+        public Menu(ref ConsoleKeyInfo pressedKey, ref bool startGame)
+        {
+            while (true)
+            {
+                if (!startGame)
+                {
+                    if (pressedKey.Key == ConsoleKey.UpArrow)
+                    {
+                        Console.Clear();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.SetCursorPosition(50, 1);
+                        Console.WriteLine("Snake");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.SetCursorPosition(50, 5);
+                        Console.WriteLine("Start");
+                        Console.SetCursorPosition(70, 5);
+                        Console.WriteLine("Selected*");
+                        Console.SetCursorPosition(50, 6);
+                        Console.WriteLine("Exit");
+                        Console.ReadKey();
+                        if (pressedKey.Key == ConsoleKey.Enter)
+                        {
+                            startGame = true;
+                            Console.Clear();
+                        }
+                    }
+
+                    else if (pressedKey.Key == ConsoleKey.DownArrow)
+                    {
+                        Console.Clear();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.SetCursorPosition(50, 1);
+                        Console.WriteLine("Snake");
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.SetCursorPosition(50, 6);
+                        Console.WriteLine("Exit");
+                        Console.SetCursorPosition(70, 6);
+                        Console.WriteLine("Selected*");
+                        Console.SetCursorPosition(50, 5);
+                        Console.WriteLine("Start");
+                        Console.ReadKey();
+                        if (pressedKey.Key == ConsoleKey.Enter)
+                        {
+                            startGame = false;
+                            break;
+                        }
+                    }
+                }
+
+                else
+                {
+                    break;
+                }
+            }
         }
     }
 }
