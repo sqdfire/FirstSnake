@@ -26,7 +26,7 @@ namespace Snake
             Console.CursorVisible = false;
 
             char[,] map = MapUtility.ReadMap("1lvl.txt");
-            ConsoleKeyInfo pressedKey = new ConsoleKeyInfo('w', ConsoleKey.W, false, false, false);
+            var pressedKey = new ConsoleKeyInfo('w', ConsoleKey.W, false, false, false);
 
             Task.Run(() =>
             {
@@ -56,7 +56,7 @@ namespace Snake
             Console.WriteLine("Exit");
             pressedKey = Console.ReadKey();
 
-            Menu BootMenu = new Menu(ref pressedKey, ref startGame);
+            Menu BootMenu = new (ref pressedKey, ref startGame);
 
 
             while (startGame)
@@ -64,7 +64,7 @@ namespace Snake
                 Console.Clear();
 
 
-                HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds, startGame);
+                HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds);
 
                 Console.ForegroundColor = ConsoleColor.Blue;
                 MapUtility.DrawMap(map);
@@ -100,7 +100,7 @@ namespace Snake
         }
 
 
-        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds, bool startGame)
+        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds)
         {
             int[] direction = GetDirection(pressedKey);
             int nextSnakePositionX = snakeX + direction[0];
@@ -179,23 +179,12 @@ namespace Snake
         {
             if (pressedKey.Key == ConsoleKey.UpArrow || pressedKey.Key == ConsoleKey.DownArrow)
             {
-                snake = "|" + snake.Substring(1);
+                snake = string.Concat("|", snake.AsSpan(1));
             }
             else if (pressedKey.Key == ConsoleKey.LeftArrow || pressedKey.Key == ConsoleKey.RightArrow)
             {
                 snake = string.Concat("_", snake.AsSpan(1));
             }
-        }
-
-        private static int GetMaxLengthOfLine(string[] lines)
-        {
-            int maxLength = lines[0].Length;
-
-            foreach (var line in lines)
-                if (line.Length > maxLength)
-                    maxLength = line.Length;
-
-            return maxLength;
         }
     }
 
@@ -209,11 +198,13 @@ namespace Snake
             {
                 return File.ReadAllText(fileName);
             }
+
             catch (FileNotFoundException)
             {
                 Console.WriteLine("File not found, is a file valid?");
                 return null;
             }
+
             catch (IOException)
             {
                 Console.WriteLine("An I/O (input, output) error occurred while reading the file.");
