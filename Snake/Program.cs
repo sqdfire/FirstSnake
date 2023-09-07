@@ -10,8 +10,11 @@ using System.Threading;
 //         DAILY MISSIONS
 // Make class controls
 // Make menu after lose
+// If score < 42 and snake == @ cw warning about score less than needed
 //          WEEKLY MISSIONS 
 // Make new levels and switching levels
+// Ветка луза и победы( луз -> меню ) ( вин -> некст левел )
+// Расчет счета в форе с помощью метода(возможно по чарам точкам)
 namespace Snake
 {
     //this is my ideas
@@ -56,13 +59,23 @@ namespace Snake
             Console.WriteLine("Exit");
             pressedKey = Console.ReadKey();
 
-            Menu BootMenu = new (ref pressedKey, ref startGame);
+
+            string buttonName = "Start";
+            Menu BootMenu = new(ref pressedKey, ref startGame, ref buttonName);
+
+            Menu EscapeMenu = new(ref pressedKey, ref startGame, ref buttonName);
 
 
             while (startGame)
             {
+                if (pressedKey.Key == ConsoleKey.Escape && startGame != false)
+                {
+                    startGame = false;
+                    Console.Clear();
+                    buttonName = "Resume";
+                    EscapeMenu.Show(ref pressedKey, ref startGame, ref buttonName);
+                }
                 Console.Clear();
-
 
                 HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds);
 
@@ -156,6 +169,7 @@ namespace Snake
                 Console.WriteLine("You lose");
                 Thread.Sleep(3000);
                 Environment.Exit(0);
+
             }
         }
 
@@ -173,6 +187,7 @@ namespace Snake
                 direction[0] += 1;
 
             return direction;
+
         }
 
         public static void ChangeSnakesRoad(ref string snake, ConsoleKeyInfo pressedKey)
@@ -251,7 +266,12 @@ namespace Snake
 
     class Menu
     {
-        public Menu(ref ConsoleKeyInfo pressedKey, ref bool startGame)
+        public Menu(ref ConsoleKeyInfo pressedKey, ref bool startGame, ref string buttonName)
+        {
+            Show(ref pressedKey, ref startGame, ref buttonName);
+        }
+
+        public void Show(ref ConsoleKeyInfo pressedKey, ref bool startGame, ref string buttonName)
         {
             while (true)
             {
@@ -267,7 +287,7 @@ namespace Snake
 
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.SetCursorPosition(50, 5);
-                        Console.WriteLine("Start");
+                        Console.WriteLine(buttonName);
                         Console.SetCursorPosition(70, 5);
                         Console.WriteLine("Selected*");
                         Console.SetCursorPosition(50, 6);
@@ -294,12 +314,12 @@ namespace Snake
                         Console.SetCursorPosition(70, 6);
                         Console.WriteLine("Selected*");
                         Console.SetCursorPosition(50, 5);
-                        Console.WriteLine("Start");
+                        Console.WriteLine(buttonName);
                         Console.ReadKey();
+
                         if (pressedKey.Key == ConsoleKey.Enter)
                         {
-                            startGame = false;
-                            break;
+                            Exit();
                         }
                     }
                 }
@@ -309,6 +329,15 @@ namespace Snake
                     break;
                 }
             }
+        }
+
+        public static void Exit()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(50, 6);
+            Console.WriteLine("Bye");
+            Environment.Exit(0);
         }
     }
 }
