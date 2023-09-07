@@ -8,9 +8,9 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Threading;
 //         DAILY MISSIONS
-// Make class controls
 // Make menu after lose
-// If score < 42 and snake == @ cw warning about score less than needed
+// Make color on difference score
+// Delete magic numbers
 //          WEEKLY MISSIONS 
 // Make new levels and switching levels
 // Ветка луза и победы( луз -> меню ) ( вин -> некст левел )
@@ -77,7 +77,7 @@ namespace Snake
                 }
                 Console.Clear();
 
-                HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds);
+                Controls.HandleInput(pressedKey, ref snakeX, ref snakeY, map, ref score, ref snake, ref delayMilliseconds);
 
                 Console.ForegroundColor = ConsoleColor.Blue;
                 MapUtility.DrawMap(map);
@@ -111,9 +111,11 @@ namespace Snake
                 Thread.Sleep(delayMilliseconds);
             }
         }
+    }
 
-
-        private static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds)
+    class Controls
+    {
+        public static void HandleInput(ConsoleKeyInfo pressedKey, ref int snakeX, ref int snakeY, char[,] map, ref int score, ref string snake, ref int delayMilliseconds)
         {
             int[] direction = GetDirection(pressedKey);
             int nextSnakePositionX = snakeX + direction[0];
@@ -140,7 +142,7 @@ namespace Snake
                 if (nextCell == '.')
                 {
                     score++;
-                    delayMilliseconds -= 10;
+                    delayMilliseconds -= 8;
                     if (pressedKey.Key == ConsoleKey.UpArrow || pressedKey.Key == ConsoleKey.DownArrow)
                     {
                         snake = "|";
@@ -153,15 +155,6 @@ namespace Snake
                     map[nextSnakePositionX, nextSnakePositionY] = ' ';
                 }
             }
-
-            else if (score >= 42 && nextCell == '@')
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.SetCursorPosition(53, 5);
-                Console.WriteLine("Wictory!");
-                Thread.Sleep(5000);
-                Environment.Exit(0);
-            }
             else if (nextCell == '|' || nextCell == '_' || nextCell == '#')
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -169,11 +162,29 @@ namespace Snake
                 Console.WriteLine("You lose");
                 Thread.Sleep(3000);
                 Environment.Exit(0);
+            }
 
+            if (score < 42 && nextCell == '@')
+            {
+                int scoreDifference = 42 - score;
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.SetCursorPosition(45, 4);
+                Console.WriteLine($"You need a {scoreDifference} points for win");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
         }
 
-        private static int[] GetDirection(ConsoleKeyInfo pressedKey)
+        public static void ChangeSnakesRoad(ref string snake, ConsoleKeyInfo pressedKey)
+        {
+            if (pressedKey.Key == ConsoleKey.UpArrow || pressedKey.Key == ConsoleKey.DownArrow)
+                snake = string.Concat("|", snake.AsSpan(1));
+
+            else if (pressedKey.Key == ConsoleKey.LeftArrow || pressedKey.Key == ConsoleKey.RightArrow)
+                snake = string.Concat("_", snake.AsSpan(1));
+        }
+
+        public static int[] GetDirection(ConsoleKeyInfo pressedKey)
         {
             int[] direction = { 0, 0 };
 
@@ -187,19 +198,6 @@ namespace Snake
                 direction[0] += 1;
 
             return direction;
-
-        }
-
-        public static void ChangeSnakesRoad(ref string snake, ConsoleKeyInfo pressedKey)
-        {
-            if (pressedKey.Key == ConsoleKey.UpArrow || pressedKey.Key == ConsoleKey.DownArrow)
-            {
-                snake = string.Concat("|", snake.AsSpan(1));
-            }
-            else if (pressedKey.Key == ConsoleKey.LeftArrow || pressedKey.Key == ConsoleKey.RightArrow)
-            {
-                snake = string.Concat("_", snake.AsSpan(1));
-            }
         }
     }
 
@@ -256,9 +254,8 @@ namespace Snake
             for (int y = 0; y < map.GetLength(1); y++)
             {
                 for (int x = 0; x < map.GetLength(0); x++)
-                {
                     Console.Write(map[x, y]);
-                }
+
                 Console.Write("\n");
             }
         }
@@ -313,21 +310,17 @@ namespace Snake
                         Console.WriteLine("Exit");
                         Console.SetCursorPosition(70, 6);
                         Console.WriteLine("Selected*");
+
                         Console.SetCursorPosition(50, 5);
                         Console.WriteLine(buttonName);
                         Console.ReadKey();
 
                         if (pressedKey.Key == ConsoleKey.Enter)
-                        {
                             Exit();
-                        }
                     }
                 }
-
                 else
-                {
                     break;
-                }
             }
         }
 
